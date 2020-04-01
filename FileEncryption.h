@@ -7,7 +7,7 @@ void decrypt_text(char *);
 void write_to_file(FILE *);
 void create_new_file();
 void print_existing_file(FILE *);
-void read_existing_file();
+void view_existing_file();
 
 
 #endif

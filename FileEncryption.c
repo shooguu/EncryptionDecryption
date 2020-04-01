@@ -58,7 +58,7 @@ void write_to_file(FILE *fp)
         fputs(data, fp);
     }
     fclose(fp);
-    printf("File created and written to successfully\n");
+    printf("File created and written to successfully\n\n");
 }
 
 
@@ -84,12 +84,21 @@ void create_new_file()
 }
 
 
-void print_exising_file(FILE *fp)
+void print_existing_file(FILE *fp)
 {
-    
+    int line_number = 1;
+    printf("\nDECRYPTED TEXT\n--------------\n");
+    char buffer[DATASIZE];
+
+    while (fgets(buffer, DATASIZE, fp))
+    {
+        decrypt_text(buffer);
+        printf("\t%d: %s", line_number++, buffer);
+    }
+    printf("\n");
 }
 
-void read_existing_file()
+void view_existing_file()
 {
     char filename[FILENAMESZ];
     FILE *fp;
@@ -109,10 +118,11 @@ void read_existing_file()
     for (int i = 0; i < 3; ++i)
     {
         fflush(stdout);
-        timer(500);
+        timer(300);
         printf(".");
     }
     printf("\n");
+    print_existing_file(fp);
 }
 
 
@@ -124,25 +134,31 @@ int main()
 
     while (1)
     {
-        printf("[1] Create new file\n[2] Edit existing file\n[3] Quit\n$: ");
+        printf("[1] Create new file\n[2] Edit existing file\n[3] View existing file\n[4] Quit\n$: ");
         scanf("%c", &option_1);
 
         if (option_1 == '1')
         {
             create_new_file();
-            break;
         }
         else if (option_1 == '2')
         {
-            read_existing_file();
+            //read_existing_file();
             break;
         }
         else if (option_1 == '3')
         {
+            view_existing_file();
+        }
+        else if (option_1 == '4')
+        {
             printf("Successfully exited\n");
             exit(1);
         }
-        printf("Please enter a valid inter\n");
+        else
+        {
+            printf("\nPlease enter a valid number\n");
+        }
         fflush(stdin);
     }
 
