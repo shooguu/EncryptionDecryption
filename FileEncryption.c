@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include <time.h>
 #include "FileEncryption.h"
 
@@ -62,11 +63,8 @@ void write_to_file(FILE *fp)
 }
 
 
-void create_new_file()
+void create_new_file(FILE *fp, char* filename)
 {
-    char filename[FILENAMESZ];
-    FILE *fp;
-
     printf("Enter a file directory: ");
     scanf("%s", filename);
 
@@ -84,6 +82,11 @@ void create_new_file()
 }
 
 
+void edit_existing_file()
+{
+    
+}
+
 void print_existing_file(FILE *fp)
 {
     int line_number = 1;
@@ -98,14 +101,13 @@ void print_existing_file(FILE *fp)
     printf("\n");
 }
 
-void view_existing_file()
+void view_existing_file(FILE *fp, char *filename)
 {
-    char filename[FILENAMESZ];
-    FILE *fp;
-
-    printf("Enter a file directory: ");
-    scanf("%s", filename);
-
+    if (strlen(filename) == 0)
+    {
+        printf("Enter a file directory: ");
+        scanf("%s", filename);
+    }
     fp = fopen(filename, "r");
 
     if (fp == NULL)
@@ -128,18 +130,19 @@ void view_existing_file()
 
 int main()
 {
-    char filename[100];
     char option_1;
-    FILE *fp;
+    FILE *active_fp = NULL;
+    char active_filename[FILENAMESZ];
 
     while (1)
     {
+        printf("Currently active file: %s\n", active_filename);
         printf("[1] Create new file\n[2] Edit existing file\n[3] View existing file\n[4] Quit\n$: ");
         scanf("%c", &option_1);
 
         if (option_1 == '1')
         {
-            create_new_file();
+            create_new_file(active_fp, active_filename);
         }
         else if (option_1 == '2')
         {
@@ -148,7 +151,7 @@ int main()
         }
         else if (option_1 == '3')
         {
-            view_existing_file();
+            view_existing_file(active_fp, active_filename);
         }
         else if (option_1 == '4')
         {
